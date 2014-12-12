@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>Young</title>
+  <meta name="description" content="" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <meta name="generator" content="Young">
+
+  
+  
+  
+
+  
+</head>
+
+<!--
+<body class="home-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 -20%" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">Young</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+<main class="content" role="main">
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2014-12-12T16:50:19.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/13/android-multidex-custom-mainldexlist/">MultiDex 手动指定maindexlist</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        https://developer.android.com/tools/building/multidex.html
+官方在build tool 21.1.0后正式推出分包打包解决方法数量超标65535问题。
+dex分包原理：
+http://android-developers.blogspot.com/2011/07/custom-class-loading-in-dalvik.html
+原理既在编译器将dex分散在多个中，运行期，解
+      
+      </p>
+      
+      <p>
+          <a href="/2014/12/13/android-multidex-custom-mainldexlist/" class="excerpt-link">查看更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2014-12-12T16:45:38.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/13/android-ui-tips-log/">Android UI Tips Log</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        
+积累更为高效的Android编码习惯。
+9图编辑必须做全，如只做左侧不做上册是不标准的，最新BuildTool将无法支持该类型图片
+PullToRefresh过时，慎用（扩展性差，定制的ROM有弹性效果易产生冲突）
+ActionBarPullToRefresh过时，慎用（ActionBar只有一个，界面内可能有多个Page需要进度）使用SwipeRefreshLayout，Support包，已支持Material Design风格Sw
+      
+      </p>
+      
+      <p>
+          <a href="/2014/12/13/android-ui-tips-log/" class="excerpt-link">查看更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2014-12-12T16:23:04.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/13/android-studio-intellij-doc/">Intellij JavaDocs插件修改</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>Android Studio修改自IntelliJ<br>IntelliJ不支持评论模板，<br>需安装插件Javadocs.<br>该插件暂不支持用户名与时间可设置，<br>修改插件增加两个模板参数<br>$date、$author<br><a href="https://github.com/eyyoung/intellij-javadocs" target="_blank" rel="external">https://github.com/eyyoung/intellij-javadocs</a><br><a href="https://raw.githubusercontent.com/eyyoung/intellij-javadocs/master/intellij-javadocs.zip" title="插件下载" target="_blank" rel="external">插件下载</a></p>
+<p><img src="http://7sbp78.com1.z0.glb.clouddn.com/11.jpg" alt="插件效果修改图"></p>
+
+      
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2014-12-12T16:20:00.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/13/gradle-productflavor/">Gradle 多版本打包手记</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        
+利用默认的目录结构无需配置不同版本的工程目录结构只需在src\main的同级目录下新建渠道名称
+
+依赖的模块在构建时如果存在多版本，应该指明使用什么版本或者模块里头配置defaultPublishConfig属性
+
+
+方案一：
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:app
+      
+      </p>
+      
+      <p>
+          <a href="/2014/12/13/gradle-productflavor/" class="excerpt-link">查看更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2014-12-12T16:13:39.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/13/android-libpng/">解决libpng warning</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        新版本Build Tool在编译旧项目时出现
+libpng warning: iCCP: Not recognizing known sRGB profile that has been edited
+警告。
+解决方法：
+安装ImageMagick，并将安装路劲配置到系统环境变量http://www.imagemagick.org/script/binary-releases.php#windows新建后缀名为.ps1的PowerShe
+      
+      </p>
+      
+      <p>
+          <a href="/2014/12/13/android-libpng/" class="excerpt-link">查看更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2014-12-12T16:11:25.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/13/Android-Kotlin/">Kotlin —— Android上的Swift</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p><a href="http://blog.gouline.net/2014/08/31/kotlin-the-swift-of-android/" target="_blank" rel="external">http://blog.gouline.net/2014/08/31/kotlin-the-swift-of-android/</a></p>
+
+      
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2014-12-12T16:09:27.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/13/android-customview-save-instance/">自定义控件保存状态</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        方法一：
+public class CustomView extends View {
+
+  private int stateToSave;
+
+  ...
+
+  @Override
+  public Parcelable onSaveInstanceState() {
+    //begin boilerplate code that allows parent classes to save state
+    Parcelable
+      
+      </p>
+      
+      <p>
+          <a href="/2014/12/13/android-customview-save-instance/" class="excerpt-link">查看更多...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2014-12-12T16:05:33.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/13/android-realm/">移动平台新数据库 Realm</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p><a href="http://realm.io/" target="_blank" rel="external">http://realm.io/</a></p>
+
+      
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2014-12-12T16:02:26.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/13/Android-Opensource/">Android开源网站</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p><a href="https://android-arsenal.com/" target="_blank" rel="external">https://android-arsenal.com/</a></p>
+<p><a href="https://github.com/Trinea/android-open-project" target="_blank" rel="external">https://github.com/Trinea/android-open-project</a></p>
+
+      
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2014-12-12T15:59:11.000Z" itemprop="datePublished">
+          12月 12 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/12/Windows-Clean/">Windows文件清理</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <ol>
+<li>删除休眠文件<br>运行-CMD-输入<br>powercfg -h off</li>
+<li>转移虚拟内存页面文件<br>Windows徽标+PauseBreak按键打开系统设置<br>高级系统设置-高级-设置-高级-更改<br>设置C盘无分页文件，设置至其他盘符</li>
+<li>更新文件清理<br><a href="http://pan.baidu.com/share/link?shareid=2340110869&amp;uk=1479592826" target="_blank" rel="external">http://pan.baidu.com/share/link?shareid=2340110869&amp;uk=1479592826</a></li>
+</ol>
+
+      
+      </p>
+      
+    </section>
+  </article>
+  
+  <nav class="pagination" role="pagination">
+    
+    <span class="page-number">Page 1 of 2</span>
+    <a class="older-posts" href="/page/2/">上一篇 →</a>
+  </nav>
+</main>
+
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+     <section class="copyright">All content copyright <a href="/">Young</a> &copy; 2014 &bull; All rights reserved.</section>
+     <section class="poweredby">Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a></section>
+  </div>
+</footer>
+
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+
+  </div>
+</div>
+
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home"  href="/"><span>Home</span></a>
+
+          <a class="icon-news"  href="/archive"><span>Archive</span></a>
+
+          <a class="icon-image"  href="/images"><span>Images</span></a>
+
+          <a class="icon-Favorites"  href="/favorites"><span>Favorites</span></a>
+
+          <a class="icon-mail"  href="/"><span>Contact</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>
