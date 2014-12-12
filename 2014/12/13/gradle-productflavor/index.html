@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>Gradle 多版本打包手记 | Young</title>
+  <meta name="description" content="" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <meta name="generator" content="Young">
+
+  
+  
+  
+
+  
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 -20%" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">Young</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2014-12-12T16:20:00.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+    <h1 class="post-title">Gradle 多版本打包手记</h1>
+    <section class="post-content">
+      <ol>
+<li><p>利用默认的目录结构无需配置不同版本的工程目录结构<br>只需在src\main的同级目录下新建渠道名称</p>
+</li>
+<li><p>依赖的模块在构建时如果存在多版本，应该指明使用什么版本或者模块里头配置defaultPublishConfig属性</p>
+</li>
+</ol>
+<p>方案一：</p>
+<pre><code><span class="keyword">dependencies</span> {
+    <span class="keyword">compile</span> <span class="keyword">fileTree</span>(dir: <span class="string">'libs'</span>, <span class="keyword">include</span>: [<span class="string">'*.jar'</span>])
+    <span class="keyword">compile</span> <span class="string">'com.android.support:appcompat-v7:21.0.0'</span>
+    flavorOneCompile <span class="keyword">project</span>(path: <span class="string">':testmoduleone'</span>, configuration: <span class="string">'flavorOneDebug'</span>)
+<span class="comment">//    flavorOneCompile project(path: ':testmoduleone', configuration: 'flavorOneRelease')</span>
+    flavorTwoCompile <span class="keyword">project</span>(path: <span class="string">':testmoduleone'</span>, configuration: <span class="string">'flavorTwoDebug'</span>)
+}
+</code></pre><p>方案二：</p>
+<pre><code><span class="title">android</span> {
+    <span class="title">defaultPublishConfig</span> <span class="string">"flavorOneDebug"</span>
+}
+</code></pre><p>运行阶段在Build Variant窗口进行选择运行何种版本</p>
+<p>灵活使用buildConfigField<br>如外网内网包可配置不同版本或者定义不同常量</p>
+<pre><code>android {
+    <span class="keyword">...</span>
+    buildTypes {
+        def BOOLEAN = <span class="string">"boolean"</span>
+        def <span class="literal">TRUE</span> = <span class="string">"true"</span>
+        def <span class="literal">FALSE</span> = <span class="string">"false"</span>
+        def LOG_HTTP_REQUESTS = <span class="string">"LOG_HTTP_REQUESTS"</span>
+        def REPORT_CRASHES = <span class="string">"REPORT_CRASHES"</span>
+        def ENABLE_VIEW_SERVER = <span class="string">"ENABLE_VIEW_SERVER"</span>
+        def ENABLE_SHARING = <span class="string">"ENABLE_SHARING"</span>
+        def DEBUG_IMAGES = <span class="string">"DEBUG_IMAGES"</span>
+
+        debug {
+            <span class="keyword">...</span>
+            buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, <span class="literal">TRUE</span>
+            buildConfigField BOOLEAN, REPORT_CRASHES, <span class="literal">FALSE</span>
+            buildConfigField BOOLEAN, ENABLE_VIEW_SERVER, <span class="literal">TRUE</span>
+            buildConfigField BOOLEAN, ENABLE_SHARING, <span class="literal">TRUE</span>
+            buildConfigField BOOLEAN, DEBUG_IMAGES, <span class="literal">TRUE</span>
+        }
+
+        client {
+            <span class="keyword">...</span>
+            buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, <span class="literal">TRUE</span>
+            buildConfigField BOOLEAN, REPORT_CRASHES, <span class="literal">TRUE</span>
+            buildConfigField BOOLEAN, ENABLE_VIEW_SERVER, <span class="literal">FALSE</span>
+            buildConfigField BOOLEAN, ENABLE_SHARING, <span class="literal">FALSE</span>
+            buildConfigField BOOLEAN, DEBUG_IMAGES, <span class="literal">FALSE</span>
+        }
+
+        release {
+            <span class="keyword">...</span>
+            buildConfigField BOOLEAN, LOG_HTTP_REQUESTS, <span class="literal">FALSE</span>
+            buildConfigField BOOLEAN, REPORT_CRASHES, <span class="literal">TRUE</span>
+            buildConfigField BOOLEAN, ENABLE_VIEW_SERVER, <span class="literal">FALSE</span>
+            buildConfigField BOOLEAN, ENABLE_SHARING, <span class="literal">FALSE</span>
+            buildConfigField BOOLEAN, DEBUG_IMAGES, <span class="literal">FALSE</span>
+        }
+    }
+}
+</code></pre><p>Github:<br><a href="https://github.com/eyyoung/GradleMultiFlavor" target="_blank" rel="external">https://github.com/eyyoung/GradleMultiFlavor</a></p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>Young</h4>
+    <p>天时地利人和。</p>
+</section>
+      <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-sina-weibo" href="http://v.t.sina.com.cn/share/share.php?title=天时地利人和。 ?url=http://eyyoung.github.io/2014/12/13/gradle-productflavor/" target="_blank">
+        <span class="hidden">weibo</span>
+    </a>
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://eyyoung.github.io/2014/12/13/gradle-productflavor/"
+       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://eyyoung.github.io/2014/12/13/gradle-productflavor/"
+       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://eyyoung.github.io/2014/12/13/gradle-productflavor/"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2014/12/13/android-studio-intellij-doc/">
+        ← Intellij JavaDocs插件修改
+    </a>
+    
+    <span class="icon-logo">•</span>
+    
+    <a class="older-posts" href="/2014/12/13/android-libpng/">
+        解决libpng warning →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="post-gradle-productflavor" data-title="Gradle 多版本打包手记" data-url="http://eyyoung.github.io/2014/12/13/gradle-productflavor/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'yytech'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+</main>
+
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+     <section class="copyright">All content copyright <a href="/">Young</a> &copy; 2014 &bull; All rights reserved.</section>
+     <section class="poweredby">Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a></section>
+  </div>
+</footer>
+
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+
+  </div>
+</div>
+
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home"  href="/"><span>Home</span></a>
+
+          <a class="icon-news"  href="/archive"><span>Archive</span></a>
+
+          <a class="icon-image"  href="/images"><span>Images</span></a>
+
+          <a class="icon-Favorites"  href="/favorites"><span>Favorites</span></a>
+
+          <a class="icon-mail"  href="/"><span>Contact</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

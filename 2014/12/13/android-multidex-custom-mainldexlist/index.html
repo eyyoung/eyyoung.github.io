@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>MultiDex 手动指定maindexlist | Young</title>
+  <meta name="description" content="" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <meta name="generator" content="Young">
+
+  
+  
+  
+
+  
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 -20%" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">Young</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2014-12-12T16:50:19.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+    <h1 class="post-title">MultiDex 手动指定maindexlist</h1>
+    <section class="post-content">
+      <p><a href="https://developer.android.com/tools/building/multidex.html" target="_blank" rel="external">https://developer.android.com/tools/building/multidex.html</a></p>
+<p>官方在build tool 21.1.0后正式推出分包打包解决方法数量超标65535问题。</p>
+<p>dex分包原理：</p>
+<p><a href="http://android-developers.blogspot.com/2011/07/custom-class-loading-in-dalvik.html" target="_blank" rel="external">http://android-developers.blogspot.com/2011/07/custom-class-loading-in-dalvik.html</a></p>
+<p>原理既在编译器将dex分散在多个中，运行期，解压出其他dex并让classloader尝试加载</p>
+<p>主要步骤：</p>
+<p>增加依赖</p>
+<pre><code><span class="keyword">compile</span> <span class="string">'com.android.support:multidex:1.0.0'</span>
+</code></pre><p>配置开关</p>
+<pre><code><span class="title">defaultConfig</span> {
+    <span class="title">multiDexEnabled</span> <span class="built_in">true</span>
+}
+</code></pre><p>相比在该版本推出前，打包过程多了几个步骤，</p>
+<p>收集所有类（package）<br>压缩所有类（shrink）<br>创建mainDexList（建立主dex列表，减小在Application初始化前由于找不到类导致崩溃的可能性）<br>项目中遇到的问题是在主工程的Application调用了其他aar中的初始化操作，</p>
+<p>build tool未检测出来该初始化操作所需要的类，导致初始化无法找到该类。</p>
+<p>解决方案：</p>
+<p>在主公程build/intermediates/multi-dex中找出maindexlist，</p>
+<p>拷贝出来。</p>
+<p>自行增加没有被包含进去的类。</p>
+<p>增加自定义maindexlist代码。让dex工具强行使用我们生成的maindexlist</p>
+<pre><code>afterEvaluate {
+    tasks.matching {
+        it.name.startsWith(<span class="string">'dex'</span>)
+    }.<span class="keyword">each</span> { dx -&amp;gt;
+        <span class="keyword">if</span> (dx.additionalParameters == <span class="literal">null</span>) {
+            dx.additionalParameters = []
+        }
+
+        <span class="comment">// optional</span>
+        dx.additionalParameters += <span class="string">"--main-dex-list=$projectDir/maindexlist.txt"</span>.toString() <span class="comment">// enable the main-dex-list</span>
+        dx.additionalParameters += <span class="string">"--minimal-main-dex"</span> <span class="comment">// enable the main-dex-list</span>
+    }
+}
+</code></pre>
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>Young</h4>
+    <p>天时地利人和。</p>
+</section>
+      <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-sina-weibo" href="http://v.t.sina.com.cn/share/share.php?title=天时地利人和。 ?url=http://eyyoung.github.io/2014/12/13/android-multidex-custom-mainldexlist/" target="_blank">
+        <span class="hidden">weibo</span>
+    </a>
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://eyyoung.github.io/2014/12/13/android-multidex-custom-mainldexlist/"
+       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://eyyoung.github.io/2014/12/13/android-multidex-custom-mainldexlist/"
+       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://eyyoung.github.io/2014/12/13/android-multidex-custom-mainldexlist/"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <span class="icon-logo">•</span>
+    
+    <a class="older-posts" href="/2014/12/13/android-ui-tips-log/">
+        Android UI Tips Log →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="post-android-multidex-custom-mainldexlist" data-title="MultiDex 手动指定maindexlist" data-url="http://eyyoung.github.io/2014/12/13/android-multidex-custom-mainldexlist/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'yytech'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+</main>
+
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+     <section class="copyright">All content copyright <a href="/">Young</a> &copy; 2014 &bull; All rights reserved.</section>
+     <section class="poweredby">Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a></section>
+  </div>
+</footer>
+
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+
+  </div>
+</div>
+
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home"  href="/"><span>Home</span></a>
+
+          <a class="icon-news"  href="/archive"><span>Archive</span></a>
+
+          <a class="icon-image"  href="/images"><span>Images</span></a>
+
+          <a class="icon-Favorites"  href="/favorites"><span>Favorites</span></a>
+
+          <a class="icon-mail"  href="/"><span>Contact</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

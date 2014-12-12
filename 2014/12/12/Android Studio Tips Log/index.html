@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>Android Studio Tips Log | Young</title>
+  <meta name="description" content="" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <meta name="generator" content="Young">
+
+  
+  
+  
+
+  
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 -20%" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">Young</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2014-12-12T08:36:29.000Z" itemprop="datePublished">
+          12月 12 2014
+      </time>
+    
+</span>
+    <h1 class="post-title">Android Studio Tips Log</h1>
+    <section class="post-content">
+      <ul>
+<li>bin目录下的vmoption文件增大虚拟机常驻内存与最大大可使用内存后，卡顿现象消失</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-Xms512m</div><div class="line">-Xmx2048m</div><div class="line">-XX:MaxPermSize=<span class="number">500</span>m</div></pre></td></tr></table></figure>
+
+<ul>
+<li>ButterKnife插件，简化见面注入操作</li>
+<li>由于基于Intelli J平台，所有的自负搜索都是模糊搜索。<br>将Keymap切换到Eclipse模式下后，快捷键可使用Eclipse习惯<br>如：<br>Ctrl+Shift+R快速打开文件（资源，类，XML，几乎所有）<br>Double Shift更加全面的搜索，除了上面，包括功能，如Show Color Picker<br>Ctrl+E最近的文件</li>
+<li>妥当利用Living Templates加快代码开发，如便捷界面输入fori后按TAB将快速生成循环迭代代码</li>
+<li>只能创建未定义变量，如先输入mFile = new File(“路径”)；如果前面未定义过mFile，再mFile处按下Alt+Enter快捷键，便可提示生成mFile全局变量</li>
+<li>快速抽取字符串资源，输入”字符串”后，使用Alt+Enter可快速生成字符串资源到string.xml并在旧位置替换成getString方法</li>
+<li>在layout文件中右键某个控键Refractor-Extract-Style可快速抽取style.Layout也可抽取并自动include</li>
+<li>Eclipse习惯下的常用快捷键：<br>Ctrl+G 快速查找引用<br>Ctrl+T 进入(类、方法、接口)实现<br>F3 跳转（方法、变量、资源）定义<br>ALT+SHIFT+R 重构（方法、变量名、类名）<br>ALT+← 跳转到上一处<br>ALT+→ 跳转到下一处<br>ALT+D 删除正航<br>SHIFT+ENTER 快速新建新行</li>
+<li>移动配置文件夹磁盘位置<br><a href="http://stackoverflow.com/questions/17390213/android-studio-path-error" target="_blank" rel="external">http://stackoverflow.com/questions/17390213/android-studio-path-error</a></li>
+</ul>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>Young</h4>
+    <p>天时地利人和。</p>
+</section>
+      <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-sina-weibo" href="http://v.t.sina.com.cn/share/share.php?title=天时地利人和。 ?url=http://eyyoung.github.io/2014/12/12/Android Studio Tips Log/" target="_blank">
+        <span class="hidden">weibo</span>
+    </a>
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://eyyoung.github.io/2014/12/12/Android Studio Tips Log/"
+       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://eyyoung.github.io/2014/12/12/Android Studio Tips Log/"
+       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://eyyoung.github.io/2014/12/12/Android Studio Tips Log/"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2014/12/12/Android with RxJava/">
+        ← Android平台上基于RxJava的异步编程
+    </a>
+    
+    <span class="icon-logo">•</span>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="post-Android Studio Tips Log" data-title="Android Studio Tips Log" data-url="http://eyyoung.github.io/2014/12/12/Android Studio Tips Log/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'yytech'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+</main>
+
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+     <section class="copyright">All content copyright <a href="/">Young</a> &copy; 2014 &bull; All rights reserved.</section>
+     <section class="poweredby">Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a></section>
+  </div>
+</footer>
+
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+
+  </div>
+</div>
+
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home"  href="/"><span>Home</span></a>
+
+          <a class="icon-news"  href="/archive"><span>Archive</span></a>
+
+          <a class="icon-image"  href="/images"><span>Images</span></a>
+
+          <a class="icon-Favorites"  href="/favorites"><span>Favorites</span></a>
+
+          <a class="icon-mail"  href="/"><span>Contact</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

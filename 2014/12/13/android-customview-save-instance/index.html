@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>自定义控件保存状态 | Young</title>
+  <meta name="description" content="" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <meta name="generator" content="Young">
+
+  
+  
+  
+
+  
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 -20%" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">Young</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2014-12-12T16:09:27.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+    <h1 class="post-title">自定义控件保存状态</h1>
+    <section class="post-content">
+      <p>方法一：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomView</span> <span class="keyword">extends</span> <span class="title">View</span> </span>{
+
+  <span class="keyword">private</span> <span class="keyword">int</span> stateToSave;
+
+  ...
+
+  <span class="annotation">@Override</span>
+  <span class="keyword">public</span> Parcelable <span class="title">onSaveInstanceState</span>() {
+    <span class="comment">//begin boilerplate code that allows parent classes to save state</span>
+    Parcelable superState = <span class="keyword">super</span>.onSaveInstanceState();
+
+    SavedState ss = <span class="keyword">new</span> SavedState(superState);
+    <span class="comment">//end</span>
+
+    ss.stateToSave = <span class="keyword">this</span>.stateToSave;
+
+    <span class="keyword">return</span> ss;
+  }
+
+  <span class="annotation">@Override</span>
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRestoreInstanceState</span>(Parcelable state) {
+    <span class="comment">//begin boilerplate code so parent classes can restore state</span>
+    <span class="keyword">if</span>(!(state <span class="keyword">instanceof</span> SavedState)) {
+      <span class="keyword">super</span>.onRestoreInstanceState(state);
+      <span class="keyword">return</span>;
+    }
+
+    SavedState ss = (SavedState)state;
+    <span class="keyword">super</span>.onRestoreInstanceState(ss.getSuperState());
+    <span class="comment">//end</span>
+
+    <span class="keyword">this</span>.stateToSave = ss.stateToSave;
+  }
+
+  <span class="keyword">static</span> class SavedState extends BaseSavedState {
+    <span class="keyword">int</span> stateToSave;
+
+    SavedState(Parcelable superState) {
+      <span class="keyword">super</span>(superState);
+    }
+
+    <span class="keyword">private</span> <span class="title">SavedState</span>(Parcel in) {
+      <span class="keyword">super</span>(in);
+      <span class="keyword">this</span>.stateToSave = in.readInt();
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeToParcel</span>(Parcel out, <span class="keyword">int</span> flags) {
+      <span class="keyword">super</span>.writeToParcel(out, flags);
+      out.writeInt(<span class="keyword">this</span>.stateToSave);
+    }
+
+    <span class="comment">//required field that makes Parcelables from a Parcel</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Parcelable.Creator&amp;lt;SavedState&amp;gt; CREATOR =
+        <span class="keyword">new</span> Parcelable.Creator&amp;lt;SavedState&amp;gt;() {
+          <span class="keyword">public</span> SavedState <span class="title">createFromParcel</span>(Parcel in) {
+            <span class="keyword">return</span> <span class="keyword">new</span> SavedState(in);
+          }
+          <span class="keyword">public</span> SavedState[] <span class="title">newArray</span>(<span class="keyword">int</span> size) {
+            <span class="keyword">return</span> <span class="keyword">new</span> SavedState[size];
+          }
+    };
+  }
+}
+</code></pre><p>方法二：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomView</span> <span class="keyword">extends</span> <span class="title">View</span> </span>{
+
+  <span class="keyword">private</span> <span class="keyword">int</span> stateToSave;
+  <span class="comment">// ... variables</span>
+
+  <span class="annotation">@Override</span>
+  <span class="keyword">public</span> Parcelable <span class="title">onSaveInstanceState</span>() {
+
+    Bundle bundle = <span class="keyword">new</span> Bundle();
+    bundle.putParcelable(<span class="string">"instanceState"</span>, <span class="keyword">super</span>.onSaveInstanceState());
+    bundle.putInt(<span class="string">"stateToSave"</span>, <span class="keyword">this</span>.stateToSave);
+    <span class="comment">// ... save everything</span>
+    <span class="keyword">return</span> bundle;
+  }
+
+  <span class="annotation">@Override</span>
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRestoreInstanceState</span>(Parcelable state) {
+
+    <span class="keyword">if</span> (state <span class="keyword">instanceof</span> Bundle) {
+      Bundle bundle = (Bundle) state;
+      <span class="keyword">this</span>.stateToSave = bundle.getInt(<span class="string">"stateToSave"</span>);
+      <span class="comment">// ... load everything</span>
+      state = bundle.getParcelable(<span class="string">"instanceState"</span>);
+    }
+    <span class="keyword">super</span>.onRestoreInstanceState(state);
+  }
+}
+</code></pre>
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>Young</h4>
+    <p>天时地利人和。</p>
+</section>
+      <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-sina-weibo" href="http://v.t.sina.com.cn/share/share.php?title=天时地利人和。 ?url=http://eyyoung.github.io/2014/12/13/android-customview-save-instance/" target="_blank">
+        <span class="hidden">weibo</span>
+    </a>
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://eyyoung.github.io/2014/12/13/android-customview-save-instance/"
+       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://eyyoung.github.io/2014/12/13/android-customview-save-instance/"
+       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://eyyoung.github.io/2014/12/13/android-customview-save-instance/"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2014/12/13/Android-Kotlin/">
+        ← Kotlin —— Android上的Swift
+    </a>
+    
+    <span class="icon-logo">•</span>
+    
+    <a class="older-posts" href="/2014/12/13/android-realm/">
+        移动平台新数据库 Realm →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="post-android-customview-save-instance" data-title="自定义控件保存状态" data-url="http://eyyoung.github.io/2014/12/13/android-customview-save-instance/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'yytech'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+</main>
+
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+     <section class="copyright">All content copyright <a href="/">Young</a> &copy; 2014 &bull; All rights reserved.</section>
+     <section class="poweredby">Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a></section>
+  </div>
+</footer>
+
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+
+  </div>
+</div>
+
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home"  href="/"><span>Home</span></a>
+
+          <a class="icon-news"  href="/archive"><span>Archive</span></a>
+
+          <a class="icon-image"  href="/images"><span>Images</span></a>
+
+          <a class="icon-Favorites"  href="/favorites"><span>Favorites</span></a>
+
+          <a class="icon-mail"  href="/"><span>Contact</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>

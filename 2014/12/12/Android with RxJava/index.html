@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>Android平台上基于RxJava的异步编程 | Young</title>
+  <meta name="description" content="" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  <meta name="generator" content="Young">
+
+  
+  
+  
+
+  
+</head>
+
+<!--
+<body class="post-template">
+-->
+<body class="home-template">
+<div id="perspective" class="perspective effect-movedown">
+  <div class="container">
+    <!-- wrapper -->
+    <div class="wrapper">
+
+      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 -20%" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">Young</h1>
+            <h2 class="blog-description"><button id="showMenu">Show Menu</button></h2>
+        </div>
+    </div>
+</header>
+
+      
+
+<main class="content" role="main">
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2014-12-12T14:57:31.000Z" itemprop="datePublished">
+          12月 12 2014
+      </time>
+    
+</span>
+    <h1 class="post-title">Android平台上基于RxJava的异步编程</h1>
+    <section class="post-content">
+      <p>作为现今的应用开发者，面临着两个相当不方便的现状：<br>1.应用程序多数操作需要异步操作<br>2.正确的处理异步操作并不容易</p>
+<p>当前Android处理异步方式：<br>1.doInBackground处理延时操作<br>2.onPostExecute处理UI操作</p>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">DownloadTask</span> <span class="inheritance"><span class="keyword">extends</span></span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">Void</span>, <span class="title">File</span>&gt; </span>{
+
+  <span class="keyword">protected</span> File doInBackground(String... args) {
+    <span class="keyword">final</span> String url = args[<span class="number">0</span>];
+    <span class="keyword">try</span> {
+      <span class="keyword">byte</span>[] fileContent = downloadFile(url);
+      File file = writeToFile(fileContent);
+      <span class="keyword">return</span> file;
+    } <span class="keyword">catch</span> (Exception e) {
+      <span class="comment">// ???</span>
+    }
+  }
+
+  <span class="keyword">protected</span> <span class="keyword">void</span> onPostExecute(File file) {
+    Context context = getContext(); <span class="comment">// ???</span>
+    Toast.makeText(context,
+        <span class="string">"Downloaded: "</span> + file.getAbsolutePath(),
+        Toast.LENGTH_SHORT)
+        .show();
+  }
+}
+</code></pre><p>看起来一切正常。但是仔细思考，并不是万事如意，要处理的事情远比上例的情况要复杂。假设downloadFile操作过程中发生异常，也许你需要try-catch或者在downloadFile函数返回一个空的数组并进行判断，如果，你想要告诉用户发生了什么错误，那么便需要通知UI线程更新界面，Toast或者是改变某个控件，但是你无法再doInBackground中直接操作这些，因为只有UI层可以更改界面元素。</p>
+<p>到这里，第一反应是认为onPostExecute中处理错误并不复杂。也许你会定义一个变量来告诉onPostExecute是发生了何种错误，或者定义一个局部变量来传递应该显示何种信息给用户。但是这种情况下，我们必须在我们的异步任务中持有Context的引用，但假设我们的doInBackground操作持续了数分钟，那么便极易引发内存泄露，因为程序中该上下文Activity可能已经从界面中结束了，而且即使在Activity的onDestroy中Cancel了该AsyncTask也无法避免此种泄露。</p>
+<p>更复杂的情况：<br>上述的下载任务只是一个非常简单的下载，假设说此时有更加复杂的耗时操作，比如从服务器调用API接口，API接口返回了Json，需要解析Json，转换结果，过滤结果或者是储存结果，此时可能需要对这些操作进行组合，也许某些时候他们只是需要过滤结果，也许某些时候是储存结果，而这些组合又不得不将他们封装成一个个任务class，或者是再一个class传入各种各样的参数来进行组合，又或者将所有的AsyncTask单独定义成类，在完成一个后启动另一个，完成一个后启动另一个，不断的交叉调用。<br>显然，这种方式显得臃肿而且易出错。再者，AsyncTask并不是一个如一而终的类，随着API版本的升高，他也在不断的完善，但是这也代表着它在某些API等级上存在问题。</p>
+<h2 id="新的解决方案：函数响应式编程">新的解决方案：函数响应式编程</h2>
+<p>RxJava是一个基于JVM的响应式编程库。函数响应式编程基于观察者模型。并发操作被看成是观察者，执行时注入观察者，每个观察者实现三个处理函数，onNext(),onError(),onComplete()，并且可以指定观察者与被观察者分别在何种线程中执行。<br>上述下载文件的代码用RxJava实现后如下：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">static</span> Observable&lt;<span class="keyword">File</span>&gt; downloadFileObservable(){
+    <span class="keyword">return</span> Observable.create(<span class="keyword">new</span> Observable.OnSubscribe&lt;<span class="keyword">File</span>&gt;() {
+        @Override
+        <span class="keyword">public</span> <span class="keyword">void</span> <span class="keyword">call</span>(Subscriber&lt;? <span class="keyword">super</span> <span class="keyword">File</span>&gt; subscriber) {
+            <span class="keyword">try</span> {
+                <span class="keyword">byte</span>[] fileContent = downloadFile();
+                <span class="keyword">File</span> <span class="keyword">file</span> = writeToFile(fileContent);
+                fileObserver.onNext(<span class="keyword">file</span>);
+                fileObserver.onCompleted();
+            } <span class="keyword">catch</span> (Exception e) {
+                fileObserver.onError(e);
+            }
+        }
+     });
+}
+</code></pre><p>此处生成了一个耗时操作的被观察者等待注入，当下载并写入完成后调用onNext与OnComplete通知观察者，并在发生异常的情况下将异常传递给观察者的onError执行。<br>RxJava的支持库RxJava-Android提供了另外的衍生方法，他支持绑定Activity与Fragment，保证再Activity与Fragment销毁的情况下不调用到观察者，并且提供了一个主线程Scheduler。</p>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">MyFragment</span> <span class="inheritance"><span class="keyword">extends</span></span> <span class="title">Fragment</span> <span class="inheritance"><span class="keyword">implements</span></span> <span class="title">Observer</span>&lt;<span class="title">File</span>&gt; </span>{
+  <span class="keyword">private</span> Subscription subscription;
+
+  @Override
+  <span class="keyword">protected</span> <span class="keyword">void</span> onCreate(Bundle savedInstanceState) {
+    subscription = AndroidObservables.bindFragment(<span class="keyword">this</span>, downloadFileObservable())
+                          .subscribeOn(Schedulers.newThread())
+                          .subscribe(<span class="keyword">this</span>);
+  }
+
+  <span class="keyword">private</span> Observable&lt;File&gt; downloadFileObservable() { <span class="comment">/* as above */</span> }
+
+  @Override
+  <span class="keyword">protected</span> <span class="keyword">void</span> onDestroy() {
+    subscription.unsubscribe();
+  }
+
+  <span class="keyword">public</span> <span class="keyword">void</span> onNext(File file) {
+    Toast.makeText(getActivity(),
+        <span class="string">"Downloaded: "</span> + file.getAbsolutePath(),
+        Toast.LENGTH_SHORT)
+        .show();
+  }
+
+  <span class="keyword">public</span> <span class="keyword">void</span> onCompleted() {}
+
+  <span class="keyword">public</span> <span class="keyword">void</span> onError(Throwable error) {
+    Toast.makeText(getActivity(),
+        <span class="string">"Download failed: "</span> + error.getMessage(),
+        Toast.LENGTH_SHORT)
+        .show();
+  }
+}
+</code></pre><p>如上所述，虽然bindFragment会保证只在Fragment有效的情况下执行到onXXX方法，但是依然需要在onDestroy中调用subscription.unsubscribe方法保证资源的正确回收避免内存泄露。<br>再来对比此种机制与AsyncTask。<br>1.错误处理方面不再存在需要定义各种整形变量与局部变量的情况，错误在子线程中组织完成后传递给onError方法。<br>2.不用关心线程的调度，调用subscribeOn与observeOn可方便设置两条流分别所处的线程。<br>3.不用担心内存的泄露。<br>4.组合起来更加的方便，如：<br>当某天另外有处需求变更为需要将下载后的文件内容显示出来给用户时，只需再原有的代码上增加一个</p>
+<pre><code>Observable&lt;String&gt; filePathObservable = downloadFileObservable().map(<span class="keyword">new</span> Func1&lt;<span class="keyword">File</span>, String&gt;() {
+    @Override
+    <span class="keyword">public</span> String <span class="keyword">call</span>(<span class="keyword">File</span> <span class="keyword">file</span>) {
+        fileContent = readFileContent();
+        <span class="keyword">return</span> fileContent;
+    }
+});
+</code></pre><p>便可将原来返回下载文件的操作变更为返回文件内容，并轻松注入观察者进行显示。代码的扩展性得到了保证。<br>5.单元测试更加方便。因为可以不依赖于Android运行，可以直接对某个耗时操作进行单元测试</p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>Young</h4>
+    <p>天时地利人和。</p>
+</section>
+      <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-sina-weibo" href="http://v.t.sina.com.cn/share/share.php?title=天时地利人和。 ?url=http://eyyoung.github.io/2014/12/12/Android with RxJava/" target="_blank">
+        <span class="hidden">weibo</span>
+    </a>
+    <a class="icon-twitter" href="http://twitter.com/share?url=http://eyyoung.github.io/2014/12/12/Android with RxJava/"
+       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://eyyoung.github.io/2014/12/12/Android with RxJava/"
+       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://eyyoung.github.io/2014/12/12/Android with RxJava/"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2014/12/12/Material-Chinese/">
+        ← Material Design 中文版
+    </a>
+    
+    <span class="icon-logo">•</span>
+    
+    <a class="older-posts" href="/2014/12/12/Android Studio Tips Log/">
+        Android Studio Tips Log →
+    </a>
+    
+</nav>
+
+  <div id="comment" class="comments-area">
+    <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
+    
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="post-Android with RxJava" data-title="Android平台上基于RxJava的异步编程" data-url="http://eyyoung.github.io/2014/12/12/Android with RxJava/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'yytech'};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+      </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+</main>
+
+
+      
+<footer class="site-footer">
+  
+  <div class="inner">
+     <section class="copyright">All content copyright <a href="/">Young</a> &copy; 2014 &bull; All rights reserved.</section>
+     <section class="poweredby">Proudly published with <a class="icon-ghost" href="http://zespia.tw/hexo/">Hexo</a></section>
+  </div>
+</footer>
+
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+
+
+
+
+  </div>
+</div>
+
+<nav  class="outer-nav top horizontal">
+
+          <a class="icon-home"  href="/"><span>Home</span></a>
+
+          <a class="icon-news"  href="/archive"><span>Archive</span></a>
+
+          <a class="icon-image"  href="/images"><span>Images</span></a>
+
+          <a class="icon-Favorites"  href="/favorites"><span>Favorites</span></a>
+
+          <a class="icon-mail"  href="/"><span>Contact</span></a>
+
+</nav>
+
+</div>
+</body>
+</html>
