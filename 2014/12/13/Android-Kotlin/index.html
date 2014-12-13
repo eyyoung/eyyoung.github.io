@@ -29,7 +29,7 @@
     <!-- wrapper -->
     <div class="wrapper">
 
-      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 -20%" >
+      <header class="site-head" >
     <div class="vertical">
         <div class="site-head-content inner">
              <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
@@ -115,13 +115,34 @@
   </div>
 </footer>
 
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+      <script src="//libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
 
 <script type="text/javascript" src="/js/jquery.fitvids.js"></script>
 <script type="text/javascript" src="/js/index.js"></script>
 <script type="text/javascript" src="/js/menu.js"></script>
 
 
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+    (function($){
+
+        var wrapAll = function(q) {
+            $(q).each( function() {
+                var $img = $(this),
+                        href = $img.attr('src');
+                $img.wrap('<a rel="fancybox" href="' + href + '" title="' + $img.attr('alt') + '" class="link"></a>');
+            });
+        };
+
+        wrapAll('.post-content img');
+        wrapAll('.post-excerpt img');
+        $('[rel="fancybox"]').fancybox({
+            'padding' : 5
+        });
+    })(jQuery);
+</script>
 
 
 
@@ -132,13 +153,13 @@
 
           <a class="icon-home"  href="/"><span>Home</span></a>
 
-          <a class="icon-news"  href="/archive"><span>Archive</span></a>
+          <a class="icon-news"  href="/tags/Android"><span>Android</span></a>
 
-          <a class="icon-image"  href="/images"><span>Images</span></a>
+          <a class="icon-Favorites"  href="/Deposit"><span>Deposit</span></a>
 
-          <a class="icon-Favorites"  href="/favorites"><span>Favorites</span></a>
+          <a class="icon-image"  href="http://young91.lofter.com"><span>Lofter</span></a>
 
-          <a class="icon-mail"  href="/"><span>Contact</span></a>
+          <a class="icon-mail"  href="mailto:young.yang.g@gmail.com"><span>Contact</span></a>
 
 </nav>
 

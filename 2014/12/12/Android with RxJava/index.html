@@ -29,7 +29,7 @@
     <!-- wrapper -->
     <div class="wrapper">
 
-      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 -20%" >
+      <header class="site-head" >
     <div class="vertical">
         <div class="site-head-content inner">
              <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
@@ -74,10 +74,12 @@
         .show();
   }
 }
-</code></pre><p>看起来一切正常。但是仔细思考，并不是万事如意，要处理的事情远比上例的情况要复杂。假设downloadFile操作过程中发生异常，也许你需要try-catch或者在downloadFile函数返回一个空的数组并进行判断，如果，你想要告诉用户发生了什么错误，那么便需要通知UI线程更新界面，Toast或者是改变某个控件，但是你无法再doInBackground中直接操作这些，因为只有UI层可以更改界面元素。</p>
+</code></pre><a id="more"></a>
+
+<p>看起来一切正常。但是仔细思考，并不是万事如意，要处理的事情远比上例的情况要复杂。假设downloadFile操作过程中发生异常，也许你需要try-catch或者在downloadFile函数返回一个空的数组并进行判断，如果，你想要告诉用户发生了什么错误，那么便需要通知UI线程更新界面，Toast或者是改变某个控件，但是你无法再doInBackground中直接操作这些，因为只有UI层可以更改界面元素。</p>
 <p>到这里，第一反应是认为onPostExecute中处理错误并不复杂。也许你会定义一个变量来告诉onPostExecute是发生了何种错误，或者定义一个局部变量来传递应该显示何种信息给用户。但是这种情况下，我们必须在我们的异步任务中持有Context的引用，但假设我们的doInBackground操作持续了数分钟，那么便极易引发内存泄露，因为程序中该上下文Activity可能已经从界面中结束了，而且即使在Activity的onDestroy中Cancel了该AsyncTask也无法避免此种泄露。</p>
 <p>更复杂的情况：<br>上述的下载任务只是一个非常简单的下载，假设说此时有更加复杂的耗时操作，比如从服务器调用API接口，API接口返回了Json，需要解析Json，转换结果，过滤结果或者是储存结果，此时可能需要对这些操作进行组合，也许某些时候他们只是需要过滤结果，也许某些时候是储存结果，而这些组合又不得不将他们封装成一个个任务class，或者是再一个class传入各种各样的参数来进行组合，又或者将所有的AsyncTask单独定义成类，在完成一个后启动另一个，完成一个后启动另一个，不断的交叉调用。<br>显然，这种方式显得臃肿而且易出错。再者，AsyncTask并不是一个如一而终的类，随着API版本的升高，他也在不断的完善，但是这也代表着它在某些API等级上存在问题。</p>
-<h2 id="新的解决方案：函数响应式编程">新的解决方案：函数响应式编程</h2>
+<h3 id="新的解决方案：函数响应式编程">新的解决方案：函数响应式编程</h3>
 <p>RxJava是一个基于JVM的响应式编程库。函数响应式编程基于观察者模型。并发操作被看成是观察者，执行时注入观察者，每个观察者实现三个处理函数，onNext(),onError(),onComplete()，并且可以指定观察者与被观察者分别在何种线程中执行。<br>上述下载文件的代码用RxJava实现后如下：</p>
 <pre><code><span class="keyword">public</span> <span class="keyword">static</span> Observable&lt;<span class="keyword">File</span>&gt; downloadFileObservable(){
     <span class="keyword">return</span> Observable.create(<span class="keyword">new</span> Observable.OnSubscribe&lt;<span class="keyword">File</span>&gt;() {
@@ -200,13 +202,34 @@
   </div>
 </footer>
 
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+      <script src="//libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
 
 <script type="text/javascript" src="/js/jquery.fitvids.js"></script>
 <script type="text/javascript" src="/js/index.js"></script>
 <script type="text/javascript" src="/js/menu.js"></script>
 
 
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+    (function($){
+
+        var wrapAll = function(q) {
+            $(q).each( function() {
+                var $img = $(this),
+                        href = $img.attr('src');
+                $img.wrap('<a rel="fancybox" href="' + href + '" title="' + $img.attr('alt') + '" class="link"></a>');
+            });
+        };
+
+        wrapAll('.post-content img');
+        wrapAll('.post-excerpt img');
+        $('[rel="fancybox"]').fancybox({
+            'padding' : 5
+        });
+    })(jQuery);
+</script>
 
 
 
@@ -217,13 +240,13 @@
 
           <a class="icon-home"  href="/"><span>Home</span></a>
 
-          <a class="icon-news"  href="/archive"><span>Archive</span></a>
+          <a class="icon-news"  href="/tags/Android"><span>Android</span></a>
 
-          <a class="icon-image"  href="/images"><span>Images</span></a>
+          <a class="icon-Favorites"  href="/Deposit"><span>Deposit</span></a>
 
-          <a class="icon-Favorites"  href="/favorites"><span>Favorites</span></a>
+          <a class="icon-image"  href="http://young91.lofter.com"><span>Lofter</span></a>
 
-          <a class="icon-mail"  href="/"><span>Contact</span></a>
+          <a class="icon-mail"  href="mailto:young.yang.g@gmail.com"><span>Contact</span></a>
 
 </nav>
 

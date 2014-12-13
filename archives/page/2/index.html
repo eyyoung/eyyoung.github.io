@@ -29,7 +29,7 @@
     <!-- wrapper -->
     <div class="wrapper">
 
-      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 -20%" >
+      <header class="site-head" >
     <div class="vertical">
         <div class="site-head-content inner">
              <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
@@ -39,8 +39,54 @@
     </div>
 </header>
 
+      <main class="content" role="main">
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2014-12-12T16:02:26.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/13/Android-Opensource/">Android开源网站</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
       
-<main class="content" role="main">
+        <p><a href="https://android-arsenal.com/" target="_blank" rel="external">https://android-arsenal.com/</a></p>
+<p><a href="https://github.com/Trinea/android-open-project" target="_blank" rel="external">https://github.com/Trinea/android-open-project</a></p>
+
+      
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2014-12-12T15:59:11.000Z" itemprop="datePublished">
+          12月 12 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/12/Windows-Clean/">Windows文件清理</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <ol>
+<li>删除休眠文件<br>运行-CMD-输入<br>powercfg -h off</li>
+<li>转移虚拟内存页面文件<br>Windows徽标+PauseBreak按键打开系统设置<br>高级系统设置-高级-设置-高级-更改<br>设置C盘无分页文件，设置至其他盘符</li>
+<li>更新文件清理<br><a href="http://pan.baidu.com/share/link?shareid=2340110869&amp;uk=1479592826" target="_blank" rel="external">http://pan.baidu.com/share/link?shareid=2340110869&amp;uk=1479592826</a></li>
+</ol>
+
+      
+      </p>
+      
+    </section>
+  </article>
   
   <article class="post">
     <header class="post-header">
@@ -55,15 +101,15 @@
     <section class="post-excerpt">
       <p>
       
-        已实现非ViewPager的TabIndicator.
-主要用于在页面非ViewPager情况下的指针展示效果如下图：
+        <p>已实现非ViewPager的TabIndicator.</p>
+<p>主要用于在页面非ViewPager情况下的指针展示<br>效果如下图：</p>
+<p><img src="https://raw.githubusercontent.com/eyyoung/AndroidTabIndicator/master/sample.gif" alt="示例图"></p>
 
-自定义属性包括：paddingleft (right/top/bottom): 标题TextView paddingtextAppearance : 标题样式，当继承于系统TextAppearancedefaultTextColor : 默认文字颜色（非选中态）indicatorColor：指针颜色indicator
       
       </p>
       
       <p>
-          <a href="/2014/12/12/Android-TabPageIndicator/" class="excerpt-link">查看更多...</a>
+          <a href="/2014/12/12/Android-TabPageIndicator/" class="excerpt-link">Read More...</a>
       </p>
       
     </section>
@@ -103,16 +149,35 @@
     <section class="post-excerpt">
       <p>
       
-        作为现今的应用开发者，面临着两个相当不方便的现状：1.应用程序多数操作需要异步操作2.正确的处理异步操作并不容易
-当前Android处理异步方式：1.doInBackground处理延时操作2.onPostExecute处理UI操作
-class DownloadTask extends AsyncTask&lt;String, Void, File&gt; {
+        <p>作为现今的应用开发者，面临着两个相当不方便的现状：<br>1.应用程序多数操作需要异步操作<br>2.正确的处理异步操作并不容易</p>
+<p>当前Android处理异步方式：<br>1.doInBackground处理延时操作<br>2.onPostExecute处理UI操作</p>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">DownloadTask</span> <span class="inheritance"><span class="keyword">extends</span></span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">Void</span>, <span class="title">File</span>&gt; </span>{
 
-  protected File doInBackground(Strin
+  <span class="keyword">protected</span> File doInBackground(String... args) {
+    <span class="keyword">final</span> String url = args[<span class="number">0</span>];
+    <span class="keyword">try</span> {
+      <span class="keyword">byte</span>[] fileContent = downloadFile(url);
+      File file = writeToFile(fileContent);
+      <span class="keyword">return</span> file;
+    } <span class="keyword">catch</span> (Exception e) {
+      <span class="comment">// ???</span>
+    }
+  }
+
+  <span class="keyword">protected</span> <span class="keyword">void</span> onPostExecute(File file) {
+    Context context = getContext(); <span class="comment">// ???</span>
+    Toast.makeText(context,
+        <span class="string">"Downloaded: "</span> + file.getAbsolutePath(),
+        Toast.LENGTH_SHORT)
+        .show();
+  }
+}
+</code></pre>
       
       </p>
       
       <p>
-          <a href="/2014/12/12/Android with RxJava/" class="excerpt-link">查看更多...</a>
+          <a href="/2014/12/12/Android with RxJava/" class="excerpt-link">Read More...</a>
       </p>
       
     </section>
@@ -125,32 +190,43 @@ class DownloadTask extends AsyncTask&lt;String, Void, File&gt; {
           12月 12 2014
       </time>
     
+    
+    | 
+    <a href='/tags/Android/'>Android</a>,
+    
+    <a href='/tags/Android-Studio/'>Android Studio</a>
+    
+    
 </span>
       <h2 class="post-title"><a href="/2014/12/12/Android Studio Tips Log/">Android Studio Tips Log</a></h2>
     </header>
     <section class="post-excerpt">
       <p>
       
-        
-bin目录下的vmoption文件增大虚拟机常驻内存与最大大可使用内存后，卡顿现象消失
+        <ul>
+<li>bin目录下的vmoption文件增大虚拟机常驻内存与最大大可使用内存后，卡顿现象消失</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-Xms512m</div><div class="line">-Xmx2048m</div><div class="line">-XX:MaxPermSize=<span class="number">500</span>m</div></pre></td></tr></table></figure>
 
-123-Xms512m-Xmx2048m-XX:MaxPermSize=500m
+<ul>
+<li>ButterKnife插件，简化见面注入操作</li>
+<li>由于基于Intelli J平台，所有的自负搜索都是模糊搜索。<br>将Keymap切换到Eclipse模式下后，快捷键可使用Eclipse习惯<br>如：<br>Ctrl+Shift+R快速打开文件（资源，类，XML，几乎所有）<br>Double Shift更加全面的搜索，除了上面，包括功能，如Show Color Picker<br>Ctrl+E最近的文件</li>
+<li>妥当利用Living Templates加快代码开发，如便捷界面输入fori后按TAB将快速生成循环迭代代码</li>
+<li>只能创建未定义变量，如先输入mFile = new File(“路径”)；如果前面未定义过mFile，再mFile处按下Alt+Enter快捷键，便可提示生成mFile全局变量</li>
+<li>快速抽取字符串资源，输入”字符串”后，使用Alt+Enter可快速生成字符串资源到string.xml并在旧位置替换成getString方法</li>
+<li>在layout文件中右键某个控键Refractor-Extract-Style可快速抽取style.Layout也可抽取并自动include</li>
+<li>Eclipse习惯下的常用快捷键：<br>Ctrl+G 快速查找引用<br>Ctrl+T 进入(类、方法、接口)实现<br>F3 跳转（方法、变量、资源）定义<br>ALT+SHIFT+R 重构（方法、变量名、类名）<br>ALT+← 跳转到上一处<br>ALT+→ 跳转到下一处<br>ALT+D 删除正航<br>SHIFT+ENTER 快速新建新行</li>
+<li>移动配置文件夹磁盘位置<br><a href="http://stackoverflow.com/questions/17390213/android-studio-path-error" target="_blank" rel="external">http://stackoverflow.com/questions/17390213/android-studio-path-error</a></li>
+</ul>
 
-
-ButterKnife插件，简化见面注入操作
-由于基于Intelli J平台，所有的自负搜索都是模糊搜索。将Keymap切换到Eclipse模式下后，快捷键可使用Eclipse习惯如：Ctrl+Shift+R快速打开文件（资源，类，XML，几乎所有）Double
       
-      </p>
-      
-      <p>
-          <a href="/2014/12/12/Android Studio Tips Log/" class="excerpt-link">查看更多...</a>
       </p>
       
     </section>
   </article>
   
   <nav class="pagination" role="pagination">
-    <a class="newer-posts" href="/archives/">← 下一篇</a>
+    <a class="newer-posts" href="/archives/">← Newer Posts</a>
     <span class="page-number">Page 2 of 2</span>
     
   </nav>
@@ -166,13 +242,34 @@ ButterKnife插件，简化见面注入操作
   </div>
 </footer>
 
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+      <script src="//libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
 
 <script type="text/javascript" src="/js/jquery.fitvids.js"></script>
 <script type="text/javascript" src="/js/index.js"></script>
 <script type="text/javascript" src="/js/menu.js"></script>
 
 
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+    (function($){
+
+        var wrapAll = function(q) {
+            $(q).each( function() {
+                var $img = $(this),
+                        href = $img.attr('src');
+                $img.wrap('<a rel="fancybox" href="' + href + '" title="' + $img.attr('alt') + '" class="link"></a>');
+            });
+        };
+
+        wrapAll('.post-content img');
+        wrapAll('.post-excerpt img');
+        $('[rel="fancybox"]').fancybox({
+            'padding' : 5
+        });
+    })(jQuery);
+</script>
 
 
 
@@ -183,13 +280,13 @@ ButterKnife插件，简化见面注入操作
 
           <a class="icon-home"  href="/"><span>Home</span></a>
 
-          <a class="icon-news"  href="/archive"><span>Archive</span></a>
+          <a class="icon-news"  href="/tags/Android"><span>Android</span></a>
 
-          <a class="icon-image"  href="/images"><span>Images</span></a>
+          <a class="icon-Favorites"  href="/Deposit"><span>Deposit</span></a>
 
-          <a class="icon-Favorites"  href="/favorites"><span>Favorites</span></a>
+          <a class="icon-image"  href="http://young91.lofter.com"><span>Lofter</span></a>
 
-          <a class="icon-mail"  href="/"><span>Contact</span></a>
+          <a class="icon-mail"  href="mailto:young.yang.g@gmail.com"><span>Contact</span></a>
 
 </nav>
 

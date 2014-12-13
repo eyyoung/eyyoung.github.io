@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>MultiDex 手动指定maindexlist | Young</title>
+  <title>MultiDex 手动指定 maindexlist | Young</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -29,7 +29,7 @@
     <!-- wrapper -->
     <div class="wrapper">
 
-      <header class="site-head"  style="background: #24282b url(/img/img-bg.jpg) 0 -20%" >
+      <header class="site-head" >
     <div class="vertical">
         <div class="site-head-content inner">
              <a class="blog-logo" href="/"><img src="/img/logo.png" alt="Blog Logo"/></a> 
@@ -49,13 +49,13 @@
       </time>
     
 </span>
-    <h1 class="post-title">MultiDex 手动指定maindexlist</h1>
+    <h1 class="post-title">MultiDex 手动指定 maindexlist</h1>
     <section class="post-content">
       <p><a href="https://developer.android.com/tools/building/multidex.html" target="_blank" rel="external">https://developer.android.com/tools/building/multidex.html</a></p>
 <p>官方在build tool 21.1.0后正式推出分包打包解决方法数量超标65535问题。</p>
 <p>dex分包原理：</p>
 <p><a href="http://android-developers.blogspot.com/2011/07/custom-class-loading-in-dalvik.html" target="_blank" rel="external">http://android-developers.blogspot.com/2011/07/custom-class-loading-in-dalvik.html</a></p>
-<p>原理既在编译器将dex分散在多个中，运行期，解压出其他dex并让classloader尝试加载</p>
+<p>原理既在编译期将dex分散在多个中，运行期，解压出其他dex并让classloader尝试加载</p>
 <p>主要步骤：</p>
 <p>增加依赖</p>
 <pre><code><span class="keyword">compile</span> <span class="string">'com.android.support:multidex:1.0.0'</span>
@@ -64,6 +64,8 @@
     <span class="title">multiDexEnabled</span> <span class="built_in">true</span>
 }
 </code></pre><p>相比在该版本推出前，打包过程多了几个步骤，</p>
+<a id="more"></a>
+
 <p>收集所有类（package）<br>压缩所有类（shrink）<br>创建mainDexList（建立主dex列表，减小在Application初始化前由于找不到类导致崩溃的可能性）<br>项目中遇到的问题是在主工程的Application调用了其他aar中的初始化操作，</p>
 <p>build tool未检测出来该初始化操作所需要的类，导致初始化无法找到该类。</p>
 <p>解决方案：</p>
@@ -102,6 +104,10 @@
   </article>
   <nav class="pagination" role="pagination">
     
+    <a class="newer-posts" href="/2014/12/13/android-gradle-maven-deploy/">
+        ← Android Studio 利用 Gradle 部署AAR
+    </a>
+    
     <span class="icon-logo">•</span>
     
     <a class="older-posts" href="/2014/12/13/android-ui-tips-log/">
@@ -114,7 +120,7 @@
     <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
     
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="post-android-multidex-custom-mainldexlist" data-title="MultiDex 手动指定maindexlist" data-url="http://eyyoung.github.io/2014/12/13/android-multidex-custom-mainldexlist/"></div>
+    <div class="ds-thread" data-thread-key="post-android-multidex-custom-mainldexlist" data-title="MultiDex 手动指定 maindexlist" data-url="http://eyyoung.github.io/2014/12/13/android-multidex-custom-mainldexlist/"></div>
     <!-- 多说评论框 end -->
     <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
     <script type="text/javascript">
@@ -143,13 +149,34 @@
   </div>
 </footer>
 
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+      <script src="//libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
 
 <script type="text/javascript" src="/js/jquery.fitvids.js"></script>
 <script type="text/javascript" src="/js/index.js"></script>
 <script type="text/javascript" src="/js/menu.js"></script>
 
 
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+    (function($){
+
+        var wrapAll = function(q) {
+            $(q).each( function() {
+                var $img = $(this),
+                        href = $img.attr('src');
+                $img.wrap('<a rel="fancybox" href="' + href + '" title="' + $img.attr('alt') + '" class="link"></a>');
+            });
+        };
+
+        wrapAll('.post-content img');
+        wrapAll('.post-excerpt img');
+        $('[rel="fancybox"]').fancybox({
+            'padding' : 5
+        });
+    })(jQuery);
+</script>
 
 
 
@@ -160,13 +187,13 @@
 
           <a class="icon-home"  href="/"><span>Home</span></a>
 
-          <a class="icon-news"  href="/archive"><span>Archive</span></a>
+          <a class="icon-news"  href="/tags/Android"><span>Android</span></a>
 
-          <a class="icon-image"  href="/images"><span>Images</span></a>
+          <a class="icon-Favorites"  href="/Deposit"><span>Deposit</span></a>
 
-          <a class="icon-Favorites"  href="/favorites"><span>Favorites</span></a>
+          <a class="icon-image"  href="http://young91.lofter.com"><span>Lofter</span></a>
 
-          <a class="icon-mail"  href="/"><span>Contact</span></a>
+          <a class="icon-mail"  href="mailto:young.yang.g@gmail.com"><span>Contact</span></a>
 
 </nav>
 
