@@ -44,6 +44,30 @@
   <article class="post">
     <header class="post-header">
       <span class="post-meta">
+      <time datetime="2014-12-13T15:05:25.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/13/随缘 2014-12-14/"></a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>2014年的10月，国庆刚放假结束之时，HQ突然询问了一番邮寄的地址，似乎是要给我快递点什么。正好碰到了难得一遇的赶工项目，门卫在通知完有信件之后，因为正在开会的原因便忘了这事。第二次收到通知已经是半个月过后了，依然很忙，但门卫老吴坚持不懈的精神倒是让人无法拒绝，便抽空去取了回来。一张明信片，上面大概的内容是说你是逗逼，希望你继续逗逼。放在桌面上，领导八卦了一番，好奇工作两年了还会有人寄明信片，我解释到是中学六年同学的情谊，人生少有的缘分。再回想回想，能够同学初中高中都是同班同学的屈指可数，如今大多数也都没了联系，除了偶尔回家见见面了了心愿回忆回忆过往剩下的也都只是点赞之交。唏嘘了一番什么都抵不过距离后，发现明信片上的名字原来都写错了。夹带点感动，我便收好明信片，在书包里放到了至今纪念一番。</p>
+<p>不知是对是错，突然倔强了起来。别人嘴里在感情上的坚持都不见了踪影，似乎是明白强扭的瓜吃起来会有一股奇怪的味道，每每受到点阻力就无法继续。一切都随了缘之后似乎连对待友谊都麻木不仁，玩笑开的越来越赤裸裸就逐渐形成了一种互讽的习惯，最后被讽刺到无法容忍的一方便选择了逃避，还挂上你既然都不在乎，我又何苦傻冒，突然觉得连友情都有了爱情的分量。万事万物，都开始追求了公平，似乎不公平便是一种缘分不足，只有建立在公平的基础上后续的发展才会平稳。<br>明知是不对，还非要坚持，有人来劝解便给自己找了个借口，受的伤太多，旁人都不懂.<br>然后就灰溜溜的躲起来了。</p>
+<p>好在忙的飞起，每晚回到家中都是过了11点，一个月因为加班的缘故多拿了0.3的工资，给自己点能挣大钱的希望。<br>自评了一个S的绩效，开始了几波疯狂的购物，体会到买买买的爽快之后，又陷入Workholic的奇怪思维。好像一个死循环一般。好在IQ及时的弥补EQ的不足，在公司也算是春风得意了几把。</p>
+<p>最近迷上了Hexo，便撤去了在DigitalOcean的VPS，一个月30的费用如今看来倒也是不痛不痒的存在了。大学刚开始的时候每个月开个10元的QQ会员都觉得光荣之极。</p>
+
+      
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
       <time datetime="2014-12-12T19:27:23.000Z" itemprop="datePublished">
           12月 13 2014
       </time>
@@ -54,7 +78,79 @@
     <section class="post-excerpt">
       <p>
       
-        
+        <p>由于项目的版本越来越多，分支越来越多，不同的版本可能在界面上需要使用不同的图标，不同的背景，不同的界面元素高度。<br>为了实现界面的可配置化，需要在子工程中定义一套方案，使得主工程中对这些界面元素可配置。</p>
+<p>具体步骤如下：<br> 定义Lib主题的attr</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">attr</span> <span class="attribute">name</span>=<span class="value">"libTheme"</span> <span class="attribute">format</span>=<span class="value">"reference"</span> /&gt;</span></div></pre></td></tr></table></figure>
+
+<p>Lib中使用libTheme指定的style</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span>(Bundle savedInstanceState) {</div><div class="line">    TypedArray typedArray = getTheme().obtainStyledAttributes(</div><div class="line">            getThemeId(<span class="keyword">this</span>), <span class="keyword">new</span> <span class="keyword">int</span>[]{R.attr.libTheme});</div><div class="line">    setTheme(typedArray.getResourceId(<span class="number">0</span>, <span class="number">0</span>));</div><div class="line">    typedArray.recycle();</div><div class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>根据APP中配置的libTheme获取App中使用的主题</p>
+<pre><code>/**
+ * 获取主题<span class="type">ID</span>
+ * @param ctx 上下文
+ * @<span class="keyword">return</span>
+ */
+private <span class="keyword">static</span> <span class="type">int</span> getThemeId(<span class="type">Context</span> ctx) {
+    <span class="keyword">try</span> {
+        <span class="type">int</span> themeResId;
+        <span class="type">Class</span>&lt;?&gt; clazz = <span class="type">ContextThemeWrapper</span>.class;
+        <span class="type">Method</span> <span class="keyword">method</span> = clazz.getMethod(<span class="string">"getThemeResId"</span>);
+        <span class="keyword">method</span>.setAccessible(<span class="literal">true</span>);
+        themeResId = (<span class="type">Integer</span>) <span class="keyword">method</span>.invoke(ctx);
+        <span class="keyword">return</span> themeResId;
+    } catch (<span class="type">NoSuchMethodException</span> e) {
+        e.printStackTrace();
+    } catch (<span class="type">IllegalAccessException</span> e) {
+        e.printStackTrace();
+    } catch (<span class="type">IllegalArgumentException</span> e) {
+        e.printStackTrace();
+    } catch (<span class="type">InvocationTargetException</span> e) {
+        e.printStackTrace();
+    }
+    <span class="keyword">return</span> R.style.<span class="type">LibDefaultStyle</span>;
+}
+</code></pre><p>定义需要配置的项在attr中</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">attr</span> <span class="attribute">name</span>=<span class="value">"libTitleBarHeight"</span> <span class="attribute">format</span>=<span class="value">"dimension"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">attr</span> <span class="attribute">name</span>=<span class="value">"libTitleBackground"</span> <span class="attribute">format</span>=<span class="value">"color"</span> /&gt;</span></div></pre></td></tr></table></figure>
+
+<p>在相应的layout中使用attr来指向对应的资源</p>
+<pre><code>&lt;LinearLayout
+        android:<span class="variable">background=</span><span class="string">"?libTitleBackground"</span>
+        android:<span class="variable">layout_width=</span><span class="string">"match_parent"</span>
+        android:<span class="variable">layout_height=</span><span class="string">"?libTitleBarHeight"</span>&gt;&lt;/LinearLayout&gt;
+
+&lt;TextView
+    android:<span class="variable">text=</span><span class="string">"@string/hello_world"</span>
+    android:<span class="variable">layout_margin=</span><span class="string">"16dp"</span>
+    android:<span class="variable">layout_width=</span><span class="string">"wrap_content"</span>
+    android:<span class="variable">layout_height=</span><span class="string">"wrap_content"</span> /&gt;
+</code></pre><p>定义一套默认的风格，避免在主工程中没有配置相应的属性导致应用崩溃</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">style</span> <span class="attribute">name</span>=<span class="value">"LibDefaultStyle"</span> <span class="attribute">parent</span>=<span class="value">"LibBaseTheme"</span>&gt;</span><span class="css"></span></div><div class="line">    &lt;<span class="tag">item</span> <span class="tag">name</span>="<span class="tag">libTitleBarHeight</span>"&gt;48<span class="tag">dp</span>&lt;/<span class="tag">item</span>&gt;</div><div class="line">    &lt;<span class="tag">item</span> <span class="tag">name</span>="<span class="tag">libTitleBackground</span>"&gt;<span class="at_rule">@<span class="keyword">android:color/holo_blue_light&lt;/item&gt;</span></span></div><div class="line"><span class="tag">&lt;/<span class="title">style</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<p>因为在不同的API版本上面需要显示不同的风格，定义LibBaseTheme在value,value-v14文件夹。</p>
+<ul>
+<li>value文件夹</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">style</span> <span class="attribute">name</span>=<span class="value">"LibBaseTheme"</span> <span class="attribute">parent</span>=<span class="value">"@android:style/Theme.Light.NoTitleBar"</span>&gt;</span><span class="css"></span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<ul>
+<li>value-v14文件夹：</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">style</span> <span class="attribute">name</span>=<span class="value">"LibBaseTheme"</span> <span class="attribute">parent</span>=<span class="value">"@android:style/Theme.Light.NoTitleBar"</span>&gt;</span><span class="css"></span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<h1 id="主工程的使用">主工程的使用</h1>
+<p>主工程使用的主题中增加配置libTheme并且配置指向一个继承LibDefaultStyle的项</p>
+<pre><code>&lt;style <span class="property">name</span>=<span class="string">"AppTheme"</span> parent=<span class="string">"Theme.AppCompat.Light.DarkActionBar"</span>&gt;
+    &lt;!<span class="comment">-- Customize your theme here. --&gt;</span>
+    &lt;<span class="property">item</span> <span class="property">name</span>=<span class="string">"libTheme"</span>&gt;@style/LibTheme&lt;/<span class="property">item</span>&gt;
+&lt;/style&gt;
+
+&lt;style <span class="property">name</span>=<span class="string">"LibTheme"</span> parent=<span class="string">"LibDefaultStyle"</span>&gt;
+    &lt;<span class="property">item</span> <span class="property">name</span>=<span class="string">"libTitleBackground"</span>&gt;@android:color/holo_green_light&lt;/<span class="property">item</span>&gt;
+&lt;/style&gt;
+</code></pre><p>如果有新的配置项，在Library中使用配置新的attr并且在layout中使用?attr/<br>并且在主工程的LibTheme中定义该attr指向的资源</p>
+<p><a href="https://github.com/eyyoung/AttributeDemo" target="_blank" rel="external">https://github.com/eyyoung/AttributeDemo</a></p>
+
       
       </p>
       
@@ -284,27 +380,6 @@
       
       <p>
           <a href="/2014/12/13/android-customview-save-instance/" class="excerpt-link">Read More...</a>
-      </p>
-      
-    </section>
-  </article>
-  
-  <article class="post">
-    <header class="post-header">
-      <span class="post-meta">
-      <time datetime="2014-12-12T16:05:33.000Z" itemprop="datePublished">
-          12月 13 2014
-      </time>
-    
-</span>
-      <h2 class="post-title"><a href="/2014/12/13/android-realm/">移动平台新数据库 Realm</a></h2>
-    </header>
-    <section class="post-excerpt">
-      <p>
-      
-        <p><a href="http://realm.io/" target="_blank" rel="external">http://realm.io/</a></p>
-
-      
       </p>
       
     </section>
