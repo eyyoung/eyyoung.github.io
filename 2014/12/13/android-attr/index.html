@@ -48,6 +48,11 @@
           12月 13 2014
       </time>
     
+    
+    | 
+    <a href='/tags/Android/'>Android</a>
+    
+    
 </span>
     <h1 class="post-title">使用Attribute使得界面可配置</h1>
     <section class="post-content">
@@ -58,7 +63,7 @@
 <p>Lib中使用libTheme指定的style</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span>(Bundle savedInstanceState) {</div><div class="line">    TypedArray typedArray = getTheme().obtainStyledAttributes(</div><div class="line">            getThemeId(<span class="keyword">this</span>), <span class="keyword">new</span> <span class="keyword">int</span>[]{R.attr.libTheme});</div><div class="line">    setTheme(typedArray.getResourceId(<span class="number">0</span>, <span class="number">0</span>));</div><div class="line">    typedArray.recycle();</div><div class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p>根据APP中配置的libTheme获取App中使用的主题</p>
+<p><a id="more"></a><br>根据APP中配置的libTheme获取App中使用的主题</p>
 <pre><code>/**
  * 获取主题<span class="type">ID</span>
  * @param ctx 上下文
@@ -111,7 +116,8 @@ private <span class="keyword">static</span> <span class="type">int</span> getThe
 </ul>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">style</span> <span class="attribute">name</span>=<span class="value">"LibBaseTheme"</span> <span class="attribute">parent</span>=<span class="value">"@android:style/Theme.Light.NoTitleBar"</span>&gt;</span><span class="css"></span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></div></pre></td></tr></table></figure>
 
-<h1 id="主工程的使用">主工程的使用</h1>
+<hr>
+<h4 id="主工程配置">主工程配置</h4>
 <p>主工程使用的主题中增加配置libTheme并且配置指向一个继承LibDefaultStyle的项</p>
 <pre><code>&lt;style <span class="property">name</span>=<span class="string">"AppTheme"</span> parent=<span class="string">"Theme.AppCompat.Light.DarkActionBar"</span>&gt;
     &lt;!<span class="comment">-- Customize your theme here. --&gt;</span>

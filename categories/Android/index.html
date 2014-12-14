@@ -44,6 +44,42 @@
   <article class="post">
     <header class="post-header">
       <span class="post-meta">
+      <time datetime="2014-12-12T19:27:23.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+    
+    | 
+    <a href='/tags/Android/'>Android</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/13/android-attr/">使用Attribute使得界面可配置</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>由于项目的版本越来越多，分支越来越多，不同的版本可能在界面上需要使用不同的图标，不同的背景，不同的界面元素高度。<br>为了实现界面的可配置化，需要在子工程中定义一套方案，使得主工程中对这些界面元素可配置。</p>
+<p>具体步骤如下：<br> 定义Lib主题的attr</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">attr</span> <span class="attribute">name</span>=<span class="value">"libTheme"</span> <span class="attribute">format</span>=<span class="value">"reference"</span> /&gt;</span></div></pre></td></tr></table></figure>
+
+<p>Lib中使用libTheme指定的style</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span>(Bundle savedInstanceState) {</div><div class="line">    TypedArray typedArray = getTheme().obtainStyledAttributes(</div><div class="line">            getThemeId(<span class="keyword">this</span>), <span class="keyword">new</span> <span class="keyword">int</span>[]{R.attr.libTheme});</div><div class="line">    setTheme(typedArray.getResourceId(<span class="number">0</span>, <span class="number">0</span>));</div><div class="line">    typedArray.recycle();</div><div class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>
+      
+      </p>
+      
+      <p>
+          <a href="/2014/12/13/android-attr/" class="excerpt-link">Read More...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
       <time datetime="2014-12-12T08:36:29.000Z" itemprop="datePublished">
           12月 12 2014
       </time>
