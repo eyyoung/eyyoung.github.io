@@ -44,6 +44,71 @@
   <article class="post">
     <header class="post-header">
       <span class="post-meta">
+      <time datetime="2014-12-15T06:58:25.000Z" itemprop="datePublished">
+          12月 15 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/15/codeigniter-restserver-auth/"></a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>title:基于CodeIgniter框架Restful风格API的Digest Auth验证<br>tags:</p>
+<ul>
+<li>Web</li>
+<li>Restful</li>
+</ul>
+<hr>
+<p>服务端开始准备改造成Restuful风格API.<br>旧版本采用if else对请求判断分发的机制太丑陋，<br>选用了CodeIgniter框架。</p>
+<p>使用插件：<br><a href="https://github.com/chriskacerguis/codeigniter-restserver" target="_blank" rel="external">https://github.com/chriskacerguis/codeigniter-restserver</a></p>
+<p>因为使用了CodeIgniter的SAE版本，避免配置破坏，所以只复制插件目录下的三个文件。</p>
+<pre><code>config/rest.php
+libraries/<span class="keyword">Format</span>.php
+libraries/Rest_Controller.php
+</code></pre><p>根据官方示例编码自己的RestController。</p>
+<h5 id="修改Auth配置">修改Auth配置</h5>
+<p>使用Digest认证<br><a href="http://zh.wikipedia.org/wiki/HTTP摘要认证" target="_blank" rel="external">http://zh.wikipedia.org/wiki/HTTP摘要认证</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$config</span>[<span class="string">'rest_realm'</span>] = <span class="string">'REST API'</span>; <span class="comment">//定义realm用于加密</span></div><div class="line"><span class="variable">$config</span>[<span class="string">'rest_auth'</span>] = <span class="string">'digest'</span>;  <span class="comment">//切换auth规则方案为digest</span></div><div class="line"><span class="variable">$config</span>[<span class="string">'auth_source'</span>] = <span class="string">'library'</span>; <span class="comment">//切换验证方案为自定义验证</span></div><div class="line"><span class="variable">$config</span>[<span class="string">'auth_library_class'</span>] = <span class="string">'auth'</span>; <span class="comment">//定义用于执行验证的类名</span></div><div class="line"><span class="variable">$config</span>[<span class="string">'auth_library_function'</span>] = <span class="string">'login'</span>; <span class="comment">//定义用于验证的方法明</span></div></pre></td></tr></table></figure>
+
+<p>配置完参数后，该框架讲使用libraries文件夹下面的auth类名，通过login方法进行验证请求是否有效。<br>login方法必须含有两个参数<br>并且在digest认证下，必须返回md5(username:realm:password)组合后的字符串，框架会自行对请求中的参数头进行验证是否与该串一致。<br>例如如下代码将通过用户名admin与密码1234的用户通过验证。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor">&lt;?php</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by PhpStorm.</div><div class="line"> * User: Young</div><div class="line"> * Date: 14-12-15</div><div class="line"> * Time: 上午1:42</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">auth</span></span></div><div class="line">{</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">login</span><span class="params">(<span class="variable">$username</span>, <span class="variable">$password</span>)</span></span></div><div class="line">    {</div><div class="line">        <span class="keyword">return</span> md5(<span class="string">'admin'</span> . <span class="string">':'</span> . <span class="string">"REST API"</span> . <span class="string">":1234"</span>);</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>如果使用Basic认证，只需要将rest_auth配置切换成basic并且在login中返回true、false对应成功与失败即可。</p>
+
+      
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
+      <time datetime="2014-12-14T12:31:03.000Z" itemprop="datePublished">
+          12月 14 2014
+      </time>
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/14/microsoft-remote-desktop/">利用Microsoft Remote Desktop使用Office</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>使用MRD可使用远程版本的Office，模拟Ofiice<br><a href="http://pan.baidu.com/s/1ntzECn3" target="_blank" rel="external">http://pan.baidu.com/s/1ntzECn3</a><br>
+      
+      </p>
+      
+      <p>
+          <a href="/2014/12/14/microsoft-remote-desktop/" class="excerpt-link">Read More...</a>
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
       <time datetime="2014-12-12T19:27:23.000Z" itemprop="datePublished">
           12月 13 2014
       </time>
@@ -83,6 +148,11 @@
       <time datetime="2014-12-12T19:07:08.000Z" itemprop="datePublished">
           12月 13 2014
       </time>
+    
+    
+    | 
+    <a href='/tags/Android/'>Android</a>
+    
     
 </span>
       <h2 class="post-title"><a href="/2014/12/13/android-gradle-maven-deploy/">Android Studio 利用 Gradle 部署AAR</a></h2>
@@ -291,51 +361,6 @@ uploadArchives {
       <p>
       
         <p><a href="http://blog.gouline.net/2014/08/31/kotlin-the-swift-of-android/" target="_blank" rel="external">http://blog.gouline.net/2014/08/31/kotlin-the-swift-of-android/</a></p>
-
-      
-      </p>
-      
-    </section>
-  </article>
-  
-  <article class="post">
-    <header class="post-header">
-      <span class="post-meta">
-      <time datetime="2014-12-12T16:09:27.000Z" itemprop="datePublished">
-          12月 13 2014
-      </time>
-    
-</span>
-      <h2 class="post-title"><a href="/2014/12/13/android-customview-save-instance/">自定义控件保存状态</a></h2>
-    </header>
-    <section class="post-excerpt">
-      <p>
-      
-        <p>处理自定义控件的onSaveInstance<br>
-      
-      </p>
-      
-      <p>
-          <a href="/2014/12/13/android-customview-save-instance/" class="excerpt-link">Read More...</a>
-      </p>
-      
-    </section>
-  </article>
-  
-  <article class="post">
-    <header class="post-header">
-      <span class="post-meta">
-      <time datetime="2014-12-12T16:05:33.000Z" itemprop="datePublished">
-          12月 13 2014
-      </time>
-    
-</span>
-      <h2 class="post-title"><a href="/2014/12/13/android-realm/">移动平台新数据库 Realm</a></h2>
-    </header>
-    <section class="post-excerpt">
-      <p>
-      
-        <p><a href="http://realm.io/" target="_blank" rel="external">http://realm.io/</a></p>
 
       
       </p>

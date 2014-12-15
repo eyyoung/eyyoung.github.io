@@ -80,6 +80,48 @@
   <article class="post">
     <header class="post-header">
       <span class="post-meta">
+      <time datetime="2014-12-12T19:07:08.000Z" itemprop="datePublished">
+          12月 13 2014
+      </time>
+    
+    
+    | 
+    <a href='/tags/Android/'>Android</a>
+    
+    
+</span>
+      <h2 class="post-title"><a href="/2014/12/13/android-gradle-maven-deploy/">Android Studio 利用 Gradle 部署AAR</a></h2>
+    </header>
+    <section class="post-excerpt">
+      <p>
+      
+        <p>配置build.gradle</p>
+<pre><code>apply plugin: 'maven'
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: <span class="string">"http://192.168.1.30:8081/nexus/content/repositories/snapshots"</span>){
+                authentication(userName: mavenUser, password: mavenPass)
+            }
+            pom.<span class="variable">version =</span> <span class="string">"1.0.0-SNAPSHOT"</span>
+            pom.<span class="variable">artifactId =</span> <span class="string">"utillibrary"</span>
+            pom.<span class="variable">groupId =</span> <span class="string">"com.nd.android.u.lib"</span>
+        }
+    }
+}
+</code></pre><p>gradle同步后Gradle视图中新增uploadArchives任务</p>
+<p>打开Gradle视图双击该任务</p>
+<p>代码中mavenUser可在Gradle主目录中新增gradle.properties配置<br>mavenUser = xxxx<br>mavenPass = xxx</p>
+
+      
+      </p>
+      
+    </section>
+  </article>
+  
+  <article class="post">
+    <header class="post-header">
+      <span class="post-meta">
       <time datetime="2014-12-12T08:36:29.000Z" itemprop="datePublished">
           12月 12 2014
       </time>
