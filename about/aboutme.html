@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Android Studio 利用 Gradle 部署AAR | Young</title>
+  <title>About Me | Young</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -44,35 +44,72 @@
 <main class="content" role="main">
   <article class="post">
     <span class="post-meta">
-      <time datetime="2014-12-12T19:07:08.000Z" itemprop="datePublished">
-          12月 13 2014
+      <time datetime="2014-12-15T09:31:31.000Z" itemprop="datePublished">
+          12月 15 2014
       </time>
     
-    
-    | 
-    <a href='/tags/Android/'>Android</a>
-    
-    
 </span>
-    <h1 class="post-title">Android Studio 利用 Gradle 部署AAR</h1>
+    <h1 class="post-title">About Me</h1>
     <section class="post-content">
-      <p>配置build.gradle</p>
-<pre><code>apply plugin: 'maven'
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: <span class="string">"http://192.168.1.30:8081/nexus/content/repositories/snapshots"</span>){
-                authentication(userName: mavenUser, password: mavenPass)
-            }
-            pom.<span class="variable">version =</span> <span class="string">"1.0.0-SNAPSHOT"</span>
-            pom.<span class="variable">artifactId =</span> <span class="string">"utillibrary"</span>
-            pom.<span class="variable">groupId =</span> <span class="string">"com.nd.android.u.lib"</span>
-        }
-    }
-}
-</code></pre><p>gradle同步后Gradle视图中新增uploadArchives任务</p>
-<p>打开Gradle视图双击该任务</p>
-<p>代码中mavenUser可在Gradle主目录中新增gradle.properties配置<br>mavenUser = xxxx<br>mavenPass = xxx</p>
+      <p>2014年6月，开始使用Github。<br>2014年7月，购买Digital Ocean VPS，搭建Wordpress。<br>2014年11月，初尝高调做事的好处。<br>2014年12月，由于GFW问题，Digital Ocean速度极度不稳定，无法满足正常连接需求。<br>弃之。<br>开始使用Hexo + Github Pages.</p>
+<h3 id="Me">Me</h3>
+<pre><code><span class="title">YoungYang</span>
+职业：软件工程师
+
+Android、Java、Web
+刷机重启换电池，重装重试换内存
+Photoshop、LightRoom、摄像
+爱虾米，逛知乎，看豆瓣
+吃苦耐劳，有责任，喜折腾，市场万金油
+
+二线城市的一线装逼程序员
+</code></pre><h3 id="Skill">Skill</h3>
+<table>
+<thead>
+<tr>
+<th>技能</th>
+<th>指数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Android</td>
+<td>●●●●●</td>
+</tr>
+<tr>
+<td>Android Studio</td>
+<td>●●●●●</td>
+</tr>
+<tr>
+<td>Gradle</td>
+<td>●●●●○</td>
+</tr>
+<tr>
+<td>Photoshop</td>
+<td>●●●○○</td>
+</tr>
+<tr>
+<td>HTML/CSS</td>
+<td>●●●○○</td>
+</tr>
+<tr>
+<td>Google</td>
+<td>●●●○○</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Social">Social</h3>
+<ul>
+<li><i class="icon-github"></i> <a href="http://github.com/eyyoung" target="_blank" rel="external">http://github.com/eyyoung</a></li>
+<li><i class="icon-sina-weibo"></i> <a href="http://weibo.com/eyyoung" target="_blank" rel="external">http://weibo.com/eyyoung</a></li>
+<li><i class="icon-mail"></i> young.yang.g#gmail.com</li>
+</ul>
+<h3 id="Experience">Experience</h3>
+<ul>
+<li>2011.7~至今 NetDragon Co. Android Programmer</li>
+</ul>
+<script type="text/javascript" src="http://www.xiami.com/widget/player-single?uid=5021289&sid=1772004514&mode=js"></script>
+
 
     </section>
     <footer class="post-footer">
@@ -82,7 +119,7 @@ uploadArchives {
 </section>
       <section class="share">
     <h4>Share</h4>
-    <a class="icon-sina-weibo" href="http://v.t.sina.com.cn/share/share.php?title=Peaceful. ?url=http://eyyoung.github.io/2014/12/13/android-gradle-maven-deploy/" target="_blank">
+    <a class="icon-sina-weibo" href="http://v.t.sina.com.cn/share/share.php?title=Peaceful. ?url=http://eyyoung.github.io/about/aboutme.html" target="_blank">
         <span class="hidden">weibo</span>
     </a>
 </section>
@@ -91,15 +128,7 @@ uploadArchives {
   </article>
   <nav class="pagination" role="pagination">
     
-    <a class="newer-posts" href="/2014/12/13/android-attr/">
-        ← 使用Attribute使得界面可配置
-    </a>
-    
     <span class="icon-logo">•</span>
-    
-    <a class="older-posts" href="/2014/12/13/android-multidex-custom-mainldexlist/">
-        MultiDex 手动指定 maindexlist →
-    </a>
     
 </nav>
 
@@ -107,7 +136,7 @@ uploadArchives {
     <h4 class="title"><a href="#disqus_comments" name="disqus_comments">评论</a></h4>
     
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="post-android-gradle-maven-deploy" data-title="Android Studio 利用 Gradle 部署AAR" data-url="http://eyyoung.github.io/2014/12/13/android-gradle-maven-deploy/"></div>
+    <div class="ds-thread" data-thread-key="page-undefined" data-title="About Me" data-url="http://eyyoung.github.io/about/aboutme.html"></div>
     <!-- 多说评论框 end -->
     <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
     <script type="text/javascript">

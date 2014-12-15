@@ -45,7 +45,7 @@ button:hover, button:active { background: rgba(0,0,0,0.2); }
 .icon-home::before { content: "\e601" }
 .icon-image::before { content: "\e602" }
 .icon-wiki::before { content: "\e607" }
-.icon-mail::before { content: "\e605" }
+.icon-mail::before { content: "\e684" }
 .icon-lock::before { content: "\e60e" }
 .icon-chart-pie::before { content: "\e612" }
 /* Effect Move Down */
@@ -125,7 +125,7 @@ button:hover, button:active { background: rgba(0,0,0,0.2); }
 .icon-flickr:before { content: "\e633"; }
 .icon-picassa:before { content: "\e634"; }
 .icon-dribbble:before { content: "\e635"; }
-.icon-github:before { content: "\e636"; }
+.icon-github:before { content: "\e687"; }
 .icon-apple:before { content: "\e637"; }
 .icon-android:before { content: "\e638"; }
 .icon-file-pdf:before { content: "\e639"; }
